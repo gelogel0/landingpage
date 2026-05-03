@@ -20,7 +20,9 @@ type LeadPayload = {
 
 function escapeMd(input: string): string {
   // Escape Telegram MarkdownV1 special chars to prevent injection / formatting bugs.
-  return input.replace(/([_*`\[\]()])/g, '\\$1');
+  // Backslash MUST be escaped first, otherwise a user-supplied "\" before any
+  // special char produces "\\<char>" and Telegram fails to parse the entity.
+  return input.replace(/\\/g, '\\\\').replace(/([_*`\[\]()])/g, '\\$1');
 }
 
 function buildMessage(p: LeadPayload): string {
