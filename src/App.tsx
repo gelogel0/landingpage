@@ -305,11 +305,11 @@ export default function App() {
       <nav className="fixed top-0 w-full z-40 bg-[color:var(--bg-main)]/80 backdrop-blur-md border-b border-[color:var(--border)]">
         <div className="sm:px-6 flex h-16 max-w-7xl mx-auto px-4 items-center justify-between">
           <div className="flex items-center gap-2 flex-shrink-0">
-            <a href="#home" className="block cursor-pointer hover:opacity-80 transition-opacity h-12 w-[170px] sm:w-[190px]">
+            <a href="#home" className="block cursor-pointer hover:opacity-80 transition-opacity h-11 sm:h-12">
               <img
                 src="/logo.png"
-                alt="chsh studio — AI Automation"
-                className="w-full h-full object-contain block select-none pointer-events-none"
+                alt="chsh studio"
+                className="h-full w-auto object-contain block select-none pointer-events-none"
                 draggable={false}
               />
             </a>
@@ -1477,8 +1477,8 @@ export default function App() {
           </div>
           <div className="pt-4 border-t border-[color:var(--border)] flex flex-col sm:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-[140px]">
-                <img src="/logo.png" alt="chsh studio — AI Automation" className="w-full h-full object-contain block opacity-90" draggable={false} />
+              <div className="h-10">
+                <img src="/logo.png" alt="chsh studio" className="h-full w-auto object-contain block opacity-90" draggable={false} />
               </div>
               <span className="text-[10px] font-mono text-[color:var(--text-subtle)] uppercase tracking-widest">© 2025</span>
             </div>
