@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import UnicornScene from 'unicornstudio-react';
 import { initAnalytics, trackGoal } from './analytics';
 
@@ -331,6 +332,7 @@ export default function App() {
             <a href="#process" className="px-1 py-2 text-[13px] font-normal text-[color:var(--text-muted)] hover:text-[color:var(--text)] transition-colors tracking-tight">Процесс</a>
             <a href="#pricing" className="px-1 py-2 text-[13px] font-normal text-[color:var(--text-muted)] hover:text-[color:var(--text)] transition-colors tracking-tight">Тарифы</a>
             <a href="#outcomes" className="px-1 py-2 text-[13px] font-normal text-[color:var(--text-muted)] hover:text-[color:var(--text)] transition-colors tracking-tight">Результаты</a>
+            <Link to="/checklist" className="px-1 py-2 text-[13px] font-normal text-[color:var(--accent)] hover:text-[color:var(--accent-hover)] transition-colors tracking-tight">Чек-лист</Link>
             <a href={PORTFOLIO_LINK} target="_blank" rel="noreferrer" className="px-1 py-2 text-[13px] font-normal text-[color:var(--text-muted)] hover:text-[color:var(--text)] transition-colors tracking-tight inline-flex items-center gap-1">
               Портфолио
               <iconify-icon icon="solar:arrow-right-up-linear" className="text-xs"></iconify-icon>
@@ -392,6 +394,13 @@ export default function App() {
             {label}
           </a>
         ))}
+        <Link
+          to="/checklist"
+          onClick={() => setMenuOpen(false)}
+          className="text-2xl font-display uppercase tracking-tight text-[color:var(--accent)] hover:text-[color:var(--accent-hover)] transition-colors"
+        >
+          Чек-лист
+        </Link>
         <a
           href={PORTFOLIO_LINK}
           target="_blank"
@@ -464,6 +473,18 @@ export default function App() {
                 Портфолио
                 <iconify-icon icon="solar:arrow-right-up-linear" className="text-base"></iconify-icon>
               </a>
+            </div>
+
+            {/* Soft secondary CTA — lead magnet */}
+            <div className="hero-fade mt-4 flex justify-center">
+              <Link
+                to="/checklist"
+                className="group inline-flex items-center gap-2 text-[12px] sm:text-[13px] text-[color:var(--text-muted)] hover:text-[color:var(--accent)] transition-colors"
+              >
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-[color:var(--accent)] shadow-[0_0_8px_var(--accent)]"></span>
+                Не готов к аудиту? Скачай бесплатный AI-чек-лист
+                <iconify-icon icon="solar:arrow-right-linear" className="text-base transition-transform group-hover:translate-x-0.5"></iconify-icon>
+              </Link>
             </div>
 
             {/* Hero terminal panel */}
