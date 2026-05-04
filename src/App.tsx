@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import UnicornScene from 'unicornstudio-react';
+import { initAnalytics, trackGoal } from './analytics';
 
 // Lead intake endpoint — Vercel serverless function (proxies to Telegram).
 // Token + chat_id stay server-side as env vars (TG_BOT_TOKEN, TG_CHAT_ID).
@@ -86,6 +87,12 @@ export default function App() {
       setViewport({ w: window.innerWidth, h: window.innerHeight });
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  // Analytics — Yandex Metrika / Meta Pixel / TikTok Pixel / Clarity. Each
+  // tracker is opt-in via env var; missing IDs are silently skipped.
+  useEffect(() => {
+    initAnalytics();
   }, []);
 
   // Scroll-reveal
@@ -272,6 +279,10 @@ export default function App() {
 
       setSubmitted(true);
       setFormData(initialForm);
+      trackGoal('lead_submit', {
+        niche: formData.niche || undefined,
+        service: serviceLabel || undefined,
+      });
     } catch (err) {
       console.error('Form error:', err);
       setError('Не удалось отправить. Напишите напрямую в WhatsApp ниже.');
