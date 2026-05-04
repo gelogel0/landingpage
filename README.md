@@ -49,11 +49,48 @@ Browser form → POST /api/lead (same origin)
 
 Token + chat id are **never** sent to the browser. The serverless function validates the payload, escapes Markdown, caps field lengths, and returns 200/4xx/5xx.
 
+## Discovery-call qualification bot
+
+`api/tg-webhook.ts` is the Telegram webhook for the discovery-call bot. After a user starts the bot (via `/start`, optionally with a payload like `/start checklist`), the bot asks 4 short qualifying questions (niche → budget → urgency → pain) using stateless inline keyboards — all state is encoded in `callback_data`, so no DB is needed.
+
+When the user finishes, the bot:
+1. posts a structured summary to `TG_CHAT_ID` (the same channel `/api/lead` uses), and
+2. replies to the user with a CTA button — Calendly link if `CALENDLY_URL` is set, otherwise a WhatsApp deep-link.
+
+### Setup
+
+1. Add to Vercel Environment Variables:
+   - `TG_BOT_TOKEN` (already there from `/api/lead`)
+   - `TG_CHAT_ID` (already there)
+   - `CALENDLY_URL` (optional) — your public booking link, e.g. `https://calendly.com/chsh-studio/audit-30min`
+   - `WA_NUMBER` (optional) — fallback WhatsApp number; defaults to `77757767666`
+   - `TG_WEBHOOK_SECRET` (optional but recommended) — random string; if set, only Telegram-signed requests are accepted
+2. Deploy.
+3. Tell Telegram where to send updates:
+   ```bash
+   TOKEN="<your TG_BOT_TOKEN>"
+   SECRET="<your TG_WEBHOOK_SECRET, optional>"
+   curl -sS -X POST "https://api.telegram.org/bot${TOKEN}/setWebhook" \
+     -H 'Content-Type: application/json' \
+     -d "{
+       \"url\": \"https://<your-vercel-domain>/api/tg-webhook\",
+       \"secret_token\": \"${SECRET}\",
+       \"allowed_updates\": [\"message\", \"callback_query\"]
+     }"
+   ```
+4. Verify: open `https://t.me/<your_bot_username>` → tap **Start**. The bot should greet and show the niche keyboard.
+
+To remove the webhook:
+```bash
+curl "https://api.telegram.org/bot${TOKEN}/deleteWebhook"
+```
+
 ## Project layout
 
 ```
 api/
   lead.ts             # serverless function: form → Telegram
+  tg-webhook.ts       # serverless function: discovery-call bot
 public/
   logo.png            # brand logo (used in nav, footer, favicon)
   og-image.png        # 1200×630 social-share image
