@@ -32,11 +32,15 @@ vercel dev           # serves both Vite frontend and api/lead.ts
 3. **If the landing lives in a subfolder** (e.g. `chsh-landing/`), set Project Settings → **Root Directory** = `chsh-landing`.
 4. Framework: Vite (auto-detected). Build command: `npm run build`. Output: `dist`.
 5. Add **Environment Variables** (Project Settings → Environment Variables):
-   - `TG_BOT_TOKEN` = the bot token from @BotFather
+   - `TG_BOT_TOKEN` = the bot token from @BotFather (required for `/api/lead` and `/api/tg-webhook`)
    - `TG_CHAT_ID` = the destination chat id (e.g. `-1003773180003` for a private channel — bot must be admin with Post Messages permission)
    - `ALLOW_ORIGIN` (optional) = explicit CORS origin if you serve the site from a different domain than the API
+   - `CALENDLY_URL` (optional, for `/api/tg-webhook`) — public Calendly link for the discovery bot CTA
+   - `WA_NUMBER` (optional, for `/api/tg-webhook`) — fallback WhatsApp number, defaults to `77757767666`
+   - `TG_WEBHOOK_SECRET` (optional, recommended) — random string sent in the `X-Telegram-Bot-Api-Secret-Token` header by Telegram; rejects spoofed requests
+   - Public (browser) — all optional, all `VITE_*`: `VITE_YM_ID`, `VITE_CLARITY_ID`, `VITE_META_PIXEL_ID`, `VITE_TIKTOK_PIXEL_ID`. See `src/analytics.ts` and `.env.example`.
 6. Deploy. Subsequent `git push` triggers automatic redeploy.
-7. Add a custom domain (e.g. `chsh.studio`) in Project Settings → Domains; SSL provisioned automatically.
+7. Add a custom domain (e.g. `chsh.online`) in Project Settings → Domains; SSL provisioned automatically. After the domain is live, also update `index.html` canonical/OG, `public/robots.txt` and `public/sitemap.xml` if you ever change domains again — they currently point at `chsh.online`.
 
 ## Form → Telegram flow
 

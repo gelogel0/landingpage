@@ -1,4 +1,4 @@
-// Vercel serverless function: receives form data from the chsh.studio landing
+// Vercel serverless function: receives form data from the chsh.online landing
 // and forwards it to a Telegram chat. Token + chat_id stay server-side.
 //
 // Required Vercel env vars (Project Settings → Environment Variables):
@@ -22,13 +22,13 @@ function escapeMd(input: string): string {
   // Escape Telegram MarkdownV1 special chars to prevent injection / formatting bugs.
   // Backslash MUST be escaped first, otherwise a user-supplied "\" before any
   // special char produces "\\<char>" and Telegram fails to parse the entity.
-  return input.replace(/\\/g, '\\\\').replace(/([_*`\[\]()])/g, '\\$1');
+  return input.replace(/\\/g, '\\\\').replace(/([_*`[\]()])/g, '\\$1');
 }
 
 function buildMessage(p: LeadPayload): string {
   const dash = '—';
   const sections: (string | false)[] = [
-    '🔔 *Новая заявка с chsh.studio*',
+    '🔔 *Новая заявка с chsh.online*',
     '',
     `👤 *Имя:* ${escapeMd(p.name?.trim() || dash)}`,
     `📱 *Телефон:* ${escapeMd(p.phone?.trim() || dash)}`,

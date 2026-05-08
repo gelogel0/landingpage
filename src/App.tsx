@@ -16,6 +16,7 @@ const EMAIL = 'hello@chsh.studio';
 const PORTFOLIO_LINK = 'https://oc-portfolio-olive.vercel.app/';
 
 declare module 'react' {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
     interface IntrinsicElements {
       'iconify-icon': React.DetailedHTMLProps<
@@ -498,7 +499,7 @@ export default function App() {
                     <div className="w-2 h-2 rounded-full bg-[#333] border border-[#444]"></div>
                   </div>
                   <span className="text-[10px] font-mono uppercase tracking-widest text-[color:var(--text-subtle)] ml-2">
-                    chsh.studio :: deploy
+                    chsh.online :: deploy
                   </span>
                 </div>
                 <div className="flex bg-[color:var(--bg-surface)] rounded p-1 border border-[color:var(--border)]">

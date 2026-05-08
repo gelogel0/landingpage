@@ -8,5 +8,5 @@ Allow: /
 User-agent: GPTBot
 Allow: /
 
-Sitemap: https://chsh.studio/sitemap.xml
-Host: https://chsh.studio
+Sitemap: https://chsh.online/sitemap.xml
+Host: https://chsh.online
