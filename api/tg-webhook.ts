@@ -114,7 +114,7 @@ async function tg(token: string, method: string, body: unknown): Promise<unknown
 }
 
 function escapeMd(input: string): string {
-  return input.replace(/\\/g, '\\\\').replace(/([_*`\[\]()])/g, '\\$1');
+  return input.replace(/\\/g, '\\\\').replace(/([_*`[\]()])/g, '\\$1');
 }
 
 type TgUser = { id?: number; username?: string; first_name?: string; last_name?: string };

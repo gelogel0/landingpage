@@ -2,39 +2,39 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://chsh.studio/</loc>
-    <lastmod>2026-04-29</lastmod>
+    <loc>https://chsh.online/</loc>
+    <lastmod>2026-05-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://chsh.studio/" />
-    <xhtml:link rel="alternate" hreflang="kk" href="https://chsh.studio/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://chsh.online/" />
+    <xhtml:link rel="alternate" hreflang="kk" href="https://chsh.online/" />
   </url>
   <url>
-    <loc>https://chsh.studio/#services</loc>
+    <loc>https://chsh.online/#services</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://chsh.studio/#pricing</loc>
+    <loc>https://chsh.online/#pricing</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://chsh.studio/#process</loc>
+    <loc>https://chsh.online/#process</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://chsh.studio/#quote</loc>
+    <loc>https://chsh.online/#quote</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://chsh.studio/checklist</loc>
-    <lastmod>2026-04-29</lastmod>
+    <loc>https://chsh.online/checklist</loc>
+    <lastmod>2026-05-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://chsh.studio/checklist" />
-    <xhtml:link rel="alternate" hreflang="kk" href="https://chsh.studio/checklist" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://chsh.online/checklist" />
+    <xhtml:link rel="alternate" hreflang="kk" href="https://chsh.online/checklist" />
   </url>
 </urlset>

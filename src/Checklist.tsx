@@ -99,19 +99,33 @@ export default function Checklist() {
     initAnalytics();
   }, []);
 
-  // Page-specific SEO.
+  // Page-specific SEO. Mutate <title>, description, canonical and og:url for the
+  // /checklist route so search engines and social previews don't reuse the
+  // home-page meta inherited from index.html.
   useEffect(() => {
     const prevTitle = document.title;
     document.title = 'AI-чек-лист — 10 признаков что бизнесу нужен AI-бот | chsh studio';
-    const meta = document.querySelector('meta[name="description"]');
-    const prevDesc = meta?.getAttribute('content') || '';
-    meta?.setAttribute(
+
+    const desc = document.querySelector('meta[name="description"]');
+    const prevDesc = desc?.getAttribute('content') || '';
+    desc?.setAttribute(
       'content',
       'Бесплатный чек-лист от chsh studio: 10 признаков, что вашему бизнесу пора внедрить AI-бота. Для салонов, стоматологий, фитнес-клубов, ресторанов и онлайн-магазинов в Казахстане.'
     );
+
+    const canonical = document.querySelector('link[rel="canonical"]');
+    const prevCanonical = canonical?.getAttribute('href') || '';
+    canonical?.setAttribute('href', 'https://chsh.online/checklist');
+
+    const ogUrl = document.querySelector('meta[property="og:url"]');
+    const prevOgUrl = ogUrl?.getAttribute('content') || '';
+    ogUrl?.setAttribute('content', 'https://chsh.online/checklist');
+
     return () => {
       document.title = prevTitle;
-      meta?.setAttribute('content', prevDesc);
+      desc?.setAttribute('content', prevDesc);
+      if (prevCanonical) canonical?.setAttribute('href', prevCanonical);
+      if (prevOgUrl) ogUrl?.setAttribute('content', prevOgUrl);
     };
   }, []);
 

@@ -1,4 +1,4 @@
-// Lightweight analytics layer for chsh.studio landing.
+// Lightweight analytics layer for chsh.online landing.
 //
 // All trackers are env-driven (Vite import.meta.env.VITE_*). If an ID is not
 // set, the corresponding script is simply not loaded — nothing breaks. Set
