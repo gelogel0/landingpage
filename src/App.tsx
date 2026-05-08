@@ -1516,8 +1516,8 @@ export default function App() {
               <span className="text-[10px] font-mono text-[color:var(--text-subtle)] uppercase tracking-widest">© 2025</span>
             </div>
             <div className="flex gap-6">
-              <a href="#" className="text-[10px] font-mono text-[color:var(--text-subtle)] hover:text-[color:var(--text)] uppercase tracking-widest transition-colors">Политика</a>
-              <a href="#" className="text-[10px] font-mono text-[color:var(--text-subtle)] hover:text-[color:var(--text)] uppercase tracking-widest transition-colors">Оферта</a>
+              <Link to="/privacy" className="text-[10px] font-mono text-[color:var(--text-subtle)] hover:text-[color:var(--text)] uppercase tracking-widest transition-colors">Политика</Link>
+              <Link to="/offer" className="text-[10px] font-mono text-[color:var(--text-subtle)] hover:text-[color:var(--text)] uppercase tracking-widest transition-colors">Оферта</Link>
             </div>
           </div>
         </div>

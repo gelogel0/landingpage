@@ -37,4 +37,16 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://chsh.online/checklist" />
     <xhtml:link rel="alternate" hreflang="kk" href="https://chsh.online/checklist" />
   </url>
+  <url>
+    <loc>https://chsh.online/privacy</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://chsh.online/offer</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
 </urlset>
