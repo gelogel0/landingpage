@@ -12,7 +12,7 @@ const WA_NUMBER = '77757767666'; // +7 775 776 76 66
 const WA_LINK = `https://wa.me/${WA_NUMBER}`;
 const TG_USERNAME = 'xcabczxabcz';
 const TG_LINK = `https://t.me/${TG_USERNAME}`;
-const EMAIL = 'hello@chsh.studio';
+const EMAIL = 'studio@chsh.online';
 const PORTFOLIO_LINK = 'https://oc-portfolio-olive.vercel.app/';
 
 declare module 'react' {

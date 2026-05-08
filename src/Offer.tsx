@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const CONTACT_EMAIL = 'hello@chsh.studio';
+const CONTACT_EMAIL = 'studio@chsh.online';
 const WA_LINK = 'https://wa.me/77757767666';
 const LAST_UPDATED = '8 мая 2026';
 
