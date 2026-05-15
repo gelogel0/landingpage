@@ -282,6 +282,10 @@ export default function App() {
       setSubmitted(true);
       setFormData(initialForm);
       trackGoal('lead_submit', {
+        content_name: 'AI Studio Audit Request',
+        content_category: serviceLabel || 'AI Automation',
+        value: 0,
+        currency: 'KZT',
         niche: formData.niche || undefined,
         service: serviceLabel || undefined,
       });
