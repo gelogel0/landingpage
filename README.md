@@ -55,7 +55,7 @@ Token + chat id are **never** sent to the browser. The serverless function valid
 
 ## AI lead-qualification bot
 
-`api/tg-webhook.ts` is the Telegram webhook for the **AI** qualification bot. The landing form (`/api/lead`) stores the lead in Supabase and returns a `token`; the success screen shows a **«Продолжить в Telegram»** button linking to `t.me/<bot>?start=<token>`. When the user starts the bot, a Claude-powered agent (`lib/agent.ts`) greets them already knowing the form data and runs a natural **N-A-T-B** discovery (need → authority → timing → budget), updating a structured brief via tool-calling. Conversation state lives in Supabase (`conversations` table).
+`api/tg-webhook.ts` is the Telegram webhook for the **AI** qualification bot. The landing form (`/api/lead`) stores the lead in Supabase and returns a `token`; the success screen shows a **«Продолжить в Telegram»** button linking to `t.me/<bot>?start=<token>`. When the user starts the bot, an LLM agent (`lib/agent.ts`, any OpenAI-compatible endpoint) greets them already knowing the form data and runs a natural **N-A-T-B** discovery (need → authority → timing → budget), updating a structured brief via tool-calling. Conversation state lives in Supabase (`conversations` table).
 
 When the lead is qualified (or asks for a human / a price), the agent hands off:
 1. posts a structured brief + lead temperature to `TG_CHAT_ID` (same channel `/api/lead` uses), and
@@ -67,8 +67,9 @@ If `ANTHROPIC_API_KEY` or Supabase env is missing, the bot **degrades gracefully
 
 1. Run `supabase/schema.sql` once in your Supabase project (SQL Editor).
 2. Add to Vercel Environment Variables:
-   - `ANTHROPIC_API_KEY` — powers the agent (without it → static fallback)
-   - `ANTHROPIC_MODEL` (optional) — default `claude-haiku-4-5-20251001`
+   - `LLM_API_KEY` — powers the agent (without it → static fallback). OpenAI-compatible.
+   - `LLM_BASE_URL` (optional) — default `https://api.openai.com/v1`; set to your OmniRoute/gateway URL later
+   - `LLM_MODEL` (optional) — default `gpt-4o-mini`
    - `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` — server-only, for leads + state
    - `VITE_TG_BOT_USERNAME` — bot username (no `@`) for the form deep-link
    - `TG_BOT_TOKEN`, `TG_CHAT_ID` — already there from `/api/lead`

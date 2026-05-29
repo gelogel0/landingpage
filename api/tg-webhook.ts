@@ -41,7 +41,7 @@ type TgUpdate = {
 
 function aiConfigured(): boolean {
   return (
-    !!process.env.ANTHROPIC_API_KEY &&
+    !!process.env.LLM_API_KEY &&
     !!process.env.SUPABASE_URL &&
     !!process.env.SUPABASE_SERVICE_ROLE_KEY
   );
@@ -107,7 +107,7 @@ async function handleTurn(
     return;
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY as string;
+  const apiKey = process.env.LLM_API_KEY as string;
 
   // Load or initialise conversation.
   let conv: Conversation | null = await getConversation(chatId);

@@ -63,8 +63,9 @@ export type Brief = {
   budget_signal?: string;
 };
 
-// ConvMessage stores raw Anthropic message objects (role + content blocks/string).
-export type ConvMessage = { role: 'user' | 'assistant'; content: unknown };
+// ConvMessage stores raw chat messages (OpenAI-compatible: user/assistant/tool,
+// plus tool_calls / tool_call_id fields when present).
+export type ConvMessage = { role: string; content?: unknown; [key: string]: unknown };
 
 export type Conversation = {
   chat_id: number;
