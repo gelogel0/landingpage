@@ -94,9 +94,14 @@ export default function Checklist() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Init analytics on mount.
+  // Init analytics on mount + fire ViewContent for the /checklist landing
+  // (treated as a service/lead-magnet page in Meta Events Manager).
   useEffect(() => {
     initAnalytics();
+    trackGoal('view_content', {
+      content_name: 'AI Checklist — 10 Signs Business Needs an AI Bot',
+      content_category: 'Lead Magnet',
+    });
   }, []);
 
   // Page-specific SEO. Mutate <title>, description, canonical and og:url for the

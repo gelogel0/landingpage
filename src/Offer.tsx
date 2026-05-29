@@ -1,11 +1,18 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { initAnalytics } from './analytics';
 
 const CONTACT_EMAIL = 'studio@chsh.online';
 const WA_LINK = 'https://wa.me/77757767666';
 const LAST_UPDATED = '8 мая 2026';
 
 export default function Offer() {
+  // Init trackers (Yandex Metrika / Meta Pixel / TikTok / Clarity) so PageView
+  // fires for the /offer route too. initAnalytics() is idempotent.
+  useEffect(() => {
+    initAnalytics();
+  }, []);
+
   // Page-specific SEO — same per-route pattern as /privacy and /checklist.
   useEffect(() => {
     const prevTitle = document.title;

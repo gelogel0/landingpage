@@ -107,7 +107,8 @@ export function initAnalytics() {
 /**
  * Single delegated click listener that fires goals based on link href so we
  * don't have to add `onClick` to every CTA in the markup. Recognises the
- * landing's three external-CTA categories: WhatsApp / Telegram / portfolio.
+ * landing's external-CTA categories: WhatsApp / Telegram / phone / email /
+ * portfolio.
  */
 function installClickDelegation() {
   document.addEventListener(
@@ -122,6 +123,10 @@ function installClickDelegation() {
         trackGoal('whatsapp_click');
       } else if (/^https?:\/\/t\.me\//.test(href)) {
         trackGoal('telegram_click');
+      } else if (href.startsWith('tel:')) {
+        trackGoal('phone_click');
+      } else if (href.startsWith('mailto:')) {
+        trackGoal('email_click');
       } else if (href.includes('oc-portfolio-olive.vercel.app')) {
         trackGoal('portfolio_click');
       }
@@ -156,7 +161,10 @@ export function trackGoal(
         lead_submit: 'Lead',
         whatsapp_click: 'Contact',
         telegram_click: 'Contact',
+        phone_click: 'Contact',
+        email_click: 'Contact',
         portfolio_click: 'ViewContent',
+        view_content: 'ViewContent',
         checklist_optin: 'CompleteRegistration',
       };
       const evt = standard[goal] || 'Lead';
@@ -173,6 +181,9 @@ export function trackGoal(
         lead_submit: 'SubmitForm',
         whatsapp_click: 'Contact',
         telegram_click: 'Contact',
+        phone_click: 'Contact',
+        email_click: 'Contact',
+        view_content: 'ViewContent',
         checklist_optin: 'CompleteRegistration',
       };
       const evt = standard[goal] || 'ClickButton';

@@ -1,11 +1,18 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { initAnalytics } from './analytics';
 
 const CONTACT_EMAIL = 'studio@chsh.online';
 const WA_LINK = 'https://wa.me/77757767666';
 const LAST_UPDATED = '8 мая 2026';
 
 export default function Privacy() {
+  // Init trackers (Yandex Metrika / Meta Pixel / TikTok / Clarity) so PageView
+  // fires for the /privacy route too. initAnalytics() is idempotent.
+  useEffect(() => {
+    initAnalytics();
+  }, []);
+
   // Page-specific SEO. Same pattern as Checklist: mutate <title>, description,
   // canonical and og:url for the /privacy route so search engines and social
   // previews don't reuse the home-page meta inherited from index.html.
