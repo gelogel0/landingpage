@@ -8,7 +8,9 @@ create extension if not exists "pgcrypto";
 -- Form submissions from the landing (one row per /api/lead POST).
 -- `token` is handed to the user as a Telegram deep-link payload
 -- (t.me/<bot>?start=<token>) so the bot can greet them already knowing the form.
-create table if not exists public.leads (
+-- NOTE: named `inbound_leads` to coexist with the 2GIS outbound `leads` table
+-- (different schema) in the same Supabase project.
+create table if not exists public.inbound_leads (
   id          uuid primary key default gen_random_uuid(),
   token       text unique not null,
   name        text,

@@ -31,7 +31,7 @@ export type LeadRecord = {
 export async function saveLead(rec: LeadRecord): Promise<boolean> {
   const sb = getSupabase();
   if (!sb) return false;
-  const { error } = await sb.from('leads').insert(rec);
+  const { error } = await sb.from('inbound_leads').insert(rec);
   if (error) {
     console.error('[supabase] saveLead', error.message);
     return false;
@@ -43,7 +43,7 @@ export async function getLeadByToken(token: string): Promise<LeadRecord | null> 
   const sb = getSupabase();
   if (!sb) return null;
   const { data, error } = await sb
-    .from('leads')
+    .from('inbound_leads')
     .select('*')
     .eq('token', token)
     .maybeSingle();
