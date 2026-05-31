@@ -13,15 +13,15 @@
 // For the AI flow: ANTHROPIC_API_KEY, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
 // Optional: ANTHROPIC_MODEL, CALENDLY_URL, WA_NUMBER, TG_CHAT_ID, TG_WEBHOOK_SECRET
 
-import { tg, escapeMd, userTag, ctaKeyboard } from '../lib/telegram';
-import type { TgUser } from '../lib/telegram';
+import { tg, escapeMd, userTag, ctaKeyboard } from '../lib/telegram.js';
+import type { TgUser } from '../lib/telegram.js';
 import {
   getConversation,
   saveConversation,
   getLeadByToken,
-} from '../lib/supabase';
-import type { Brief, Conversation } from '../lib/supabase';
-import { runAgentTurn } from '../lib/agent';
+} from '../lib/supabase.js';
+import type { Brief, Conversation } from '../lib/supabase.js';
+import { runAgentTurn } from '../lib/agent.js';
 
 type TgUpdate = {
   update_id?: number;

@@ -4,7 +4,7 @@
 // gateway later — just change LLM_BASE_URL / LLM_API_KEY / LLM_MODEL.
 // Maintains a brief via tool/function-calling and signals hand-off to a human.
 
-import type { Brief, ConvMessage, LeadRecord } from './supabase';
+import type { Brief, ConvMessage, LeadRecord } from './supabase.js';
 
 const DEFAULT_BASE_URL = 'https://api.openai.com/v1';
 const DEFAULT_MODEL = 'gpt-4o-mini';

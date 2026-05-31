@@ -12,7 +12,7 @@
 // When set, each lead is stored and a `token` is returned so the frontend can
 // link the user into the bot via t.me/<bot>?start=<token>.
 
-import { saveLead } from '../lib/supabase';
+import { saveLead } from '../lib/supabase.js';
 
 type LeadPayload = {
   name?: string;
