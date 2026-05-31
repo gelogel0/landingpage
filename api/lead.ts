@@ -7,6 +7,12 @@
 //
 // Optional:
 //   ALLOW_ORIGIN  — explicit allowed origin for CORS (default: same-origin only)
+//
+// Optional (for the AI bot deep-link): SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY.
+// When set, each lead is stored and a `token` is returned so the frontend can
+// link the user into the bot via t.me/<bot>?start=<token>.
+
+import { saveLead } from '../lib/supabase';
 
 type LeadPayload = {
   name?: string;
@@ -109,6 +115,24 @@ export default async function handler(
 
   const text = buildMessage(payload);
 
+  // Persist the lead and mint a short deep-link token (Telegram /start payload,
+  // max 64 chars). No-op if Supabase isn't configured — token is still returned.
+  const leadToken = (
+    globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.round(Math.random() * 1e9)}`
+  )
+    .replace(/-/g, '')
+    .slice(0, 32);
+  await saveLead({
+    token: leadToken,
+    name: payload.name?.trim(),
+    phone: payload.phone?.trim(),
+    business: payload.business?.trim(),
+    niche: payload.niche?.trim(),
+    service: payload.service?.trim(),
+    message: payload.message?.trim(),
+    referrer: payload.referrer?.trim(),
+  });
+
   try {
     const tgRes = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',
@@ -128,7 +152,7 @@ export default async function handler(
       return;
     }
 
-    res.status(200).json({ ok: true });
+    res.status(200).json({ ok: true, token: leadToken });
   } catch (err) {
     console.error('Lead handler error', err);
     res.status(500).json({ error: 'Send failed' });

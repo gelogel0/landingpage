@@ -53,36 +53,44 @@ Browser form → POST /api/lead (same origin)
 
 Token + chat id are **never** sent to the browser. The serverless function validates the payload, escapes Markdown, caps field lengths, and returns 200/4xx/5xx.
 
-## Discovery-call qualification bot
+## AI lead-qualification bot
 
-`api/tg-webhook.ts` is the Telegram webhook for the discovery-call bot. After a user starts the bot (via `/start`, optionally with a payload like `/start checklist`), the bot asks 4 short qualifying questions (niche → budget → urgency → pain) using stateless inline keyboards — all state is encoded in `callback_data`, so no DB is needed.
+`api/tg-webhook.ts` is the Telegram webhook for the **AI** qualification bot. The landing form (`/api/lead`) stores the lead in Supabase and returns a `token`; the success screen shows a **«Продолжить в Telegram»** button linking to `t.me/<bot>?start=<token>`. When the user starts the bot, an LLM agent (`lib/agent.ts`, any OpenAI-compatible endpoint) greets them already knowing the form data and runs a natural **N-A-T-B** discovery (need → authority → timing → budget), updating a structured brief via tool-calling. Conversation state lives in Supabase (`conversations` table).
 
-When the user finishes, the bot:
-1. posts a structured summary to `TG_CHAT_ID` (the same channel `/api/lead` uses), and
-2. replies to the user with a CTA button — Calendly link if `CALENDLY_URL` is set, otherwise a WhatsApp deep-link.
+When the lead is qualified (or asks for a human / a price), the agent hands off:
+1. posts a structured brief + lead temperature to `TG_CHAT_ID` (same channel `/api/lead` uses), and
+2. replies to the user with a booking CTA — Calendly link if `CALENDLY_URL` is set, otherwise a WhatsApp deep-link.
+
+If `ANTHROPIC_API_KEY` or Supabase env is missing, the bot **degrades gracefully** to a static greeting + booking CTA (it never crashes).
 
 ### Setup
 
-1. Add to Vercel Environment Variables:
-   - `TG_BOT_TOKEN` (already there from `/api/lead`)
-   - `TG_CHAT_ID` (already there)
-   - `CALENDLY_URL` (optional) — your public booking link, e.g. `https://calendly.com/chsh-studio/audit-30min`
-   - `WA_NUMBER` (optional) — fallback WhatsApp number; defaults to `77757767666`
-   - `TG_WEBHOOK_SECRET` (optional but recommended) — random string; if set, only Telegram-signed requests are accepted
-2. Deploy.
-3. Tell Telegram where to send updates:
-   ```bash
-   TOKEN="<your TG_BOT_TOKEN>"
-   SECRET="<your TG_WEBHOOK_SECRET, optional>"
-   curl -sS -X POST "https://api.telegram.org/bot${TOKEN}/setWebhook" \
-     -H 'Content-Type: application/json' \
-     -d "{
-       \"url\": \"https://<your-vercel-domain>/api/tg-webhook\",
-       \"secret_token\": \"${SECRET}\",
-       \"allowed_updates\": [\"message\", \"callback_query\"]
-     }"
-   ```
-4. Verify: open `https://t.me/<your_bot_username>` → tap **Start**. The bot should greet and show the niche keyboard.
+1. Run `supabase/schema.sql` once in your Supabase project (SQL Editor).
+2. Add to Vercel Environment Variables:
+   - `LLM_API_KEY` — powers the agent (without it → static fallback). OpenAI-compatible.
+   - `LLM_BASE_URL` (optional) — default `https://api.openai.com/v1`; set to your OmniRoute/gateway URL later
+   - `LLM_MODEL` (optional) — default `gpt-4o-mini`
+   - `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` — server-only, for leads + state
+   - `VITE_TG_BOT_USERNAME` — bot username (no `@`) for the form deep-link
+   - `TG_BOT_TOKEN`, `TG_CHAT_ID` — already there from `/api/lead`
+   - `CALENDLY_URL`, `WA_NUMBER`, `TG_WEBHOOK_SECRET` (optional, as before)
+3. Deploy, then register the webhook (next section).
+
+### Register the webhook
+
+After deploying, tell Telegram where to send updates:
+```bash
+TOKEN="<your TG_BOT_TOKEN>"
+SECRET="<your TG_WEBHOOK_SECRET, optional>"
+curl -sS -X POST "https://api.telegram.org/bot${TOKEN}/setWebhook" \
+  -H 'Content-Type: application/json' \
+  -d "{
+    \"url\": \"https://<your-vercel-domain>/api/tg-webhook\",
+    \"secret_token\": \"${SECRET}\",
+    \"allowed_updates\": [\"message\", \"callback_query\"]
+  }"
+```
+Verify: open `https://t.me/<your_bot_username>` → tap **Start**. The bot should greet you and ask the first question.
 
 To remove the webhook:
 ```bash
@@ -93,8 +101,14 @@ curl "https://api.telegram.org/bot${TOKEN}/deleteWebhook"
 
 ```
 api/
-  lead.ts             # serverless function: form → Telegram
-  tg-webhook.ts       # serverless function: discovery-call bot
+  lead.ts             # serverless function: form → Supabase (token) + Telegram
+  tg-webhook.ts       # serverless function: AI qualification bot webhook
+lib/                  # shared server code (bundled into functions, not deployed alone)
+  agent.ts            # Claude SDR agent (N-A-T-B, brief via tool-calling)
+  supabase.ts         # leads + conversation state
+  telegram.ts         # Telegram Bot API helpers
+supabase/
+  schema.sql          # leads + conversations tables (run once)
 public/
   logo.png            # brand logo (used in nav, footer, favicon)
   og-image.png        # 1200×630 social-share image

@@ -12,6 +12,10 @@ const WA_NUMBER = '77757767666'; // +7 775 776 76 66
 const WA_LINK = `https://wa.me/${WA_NUMBER}`;
 const TG_USERNAME = 'xcabczxabcz';
 const TG_LINK = `https://t.me/${TG_USERNAME}`;
+// Username of the qualification BOT (not the personal account) for the form→bot
+// deep-link. Set VITE_TG_BOT_USERNAME in Vercel; falls back to TG_USERNAME.
+const BOT_USERNAME =
+  (import.meta.env.VITE_TG_BOT_USERNAME as string | undefined)?.trim() || TG_USERNAME;
 const EMAIL = 'studio@chsh.online';
 const PORTFOLIO_LINK = 'https://oc-portfolio-olive.vercel.app/';
 
@@ -76,6 +80,7 @@ export default function App() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [leadToken, setLeadToken] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activePipeline, setActivePipeline] = useState<0 | 1 | 2>(0);
   const [heroPanel, setHeroPanel] = useState<'input' | 'output'>('input');
@@ -279,6 +284,8 @@ export default function App() {
         throw new Error(`Lead endpoint ${resp.status}: ${txt}`);
       }
 
+      const data = (await resp.json().catch(() => ({}))) as { token?: string };
+      setLeadToken(data.token ?? null);
       setSubmitted(true);
       setFormData(initialForm);
       trackGoal('lead_submit', {
@@ -1448,16 +1455,30 @@ export default function App() {
                 <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[color:var(--accent-soft)] border border-[color:var(--accent)]/30 flex items-center justify-center">
                   <iconify-icon icon="solar:check-circle-bold" className="text-[color:var(--accent)] text-3xl"></iconify-icon>
                 </div>
-                <h3 className="text-2xl font-display uppercase text-[color:var(--text)] mb-2">Заявка отправлена</h3>
-                <p className="text-sm text-[color:var(--text-muted)] mb-6">
-                  Свяжусь с вами в течение 24 часов в WhatsApp или Telegram. Готовлю аудит уже сейчас.
+                <h3 className="text-2xl font-display uppercase text-[color:var(--text)] mb-2">Заявка принята</h3>
+                <p className="text-sm text-[color:var(--text-muted)] mb-6 max-w-sm mx-auto">
+                  Продолжи в Telegram — AI-ассистент задаст пару вопросов и подберёт решение под твой случай за минуту. Или дождись меня в течение 24 часов.
                 </p>
-                <button
-                  onClick={() => setSubmitted(false)}
-                  className="text-xs text-[color:var(--accent)] hover:underline"
+                <a
+                  href={leadToken ? `https://t.me/${BOT_USERNAME}?start=${leadToken}` : TG_LINK}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-[color:var(--accent)] text-white text-sm font-semibold rounded-lg tracking-tight shadow-[0_0_20px_-5px_rgba(59,130,246,0.4)] hover:bg-[color:var(--accent-hover)] hover:-translate-y-0.5 transition-all duration-300 mb-4"
                 >
-                  Отправить ещё одну
-                </button>
+                  <iconify-icon icon="logos:telegram" className="text-base"></iconify-icon>
+                  Продолжить в Telegram
+                </a>
+                <div>
+                  <button
+                    onClick={() => {
+                      setSubmitted(false);
+                      setLeadToken(null);
+                    }}
+                    className="text-xs text-[color:var(--accent)] hover:underline"
+                  >
+                    Отправить ещё одну
+                  </button>
+                </div>
               </div>
             )}
           </div>
